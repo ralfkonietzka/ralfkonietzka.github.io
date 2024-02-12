@@ -133,7 +133,7 @@ function setupDustLayer() {
 
 function setupClusterLayers() {
   const promises = [];
-  for (let phase = -10; phase <= 100; phase++) {
+  for (let phase = -10; phase <= 270; phase++) {
     const p = fetch(`data/RW_cluster_oscillation_${phase}_updated_radec.csv`)
       .then(response => response.text())
       .then(text => text.replace(/\n/g, "\r\n"))
@@ -161,7 +161,7 @@ function setupSunLayer() {
     });
 }
 
-function setupBestFitLayer() {
+async function setupBestFitLayer() {
   return fetch("data/RW_best_fit_oscillation_phase_radec_downsampled.csv")
     .then(response => response.text())
     .then(text => text.replace(/\n/g, "\r\n"))
@@ -233,7 +233,7 @@ function updateBestFitAnnotations(phase) {
   bestFitAnnotations.forEach(ann => scriptInterface.removeAnnotation(ann));
   bestFitAnnotations = [];
   bestFitOffsets.forEach(offset => {
-    const offsetPhase = (phase + offset) % 360;
+    const offsetPhase = ((phase + offset) % 360 + 360) % 360;
     const ann = new wwtlib.PolyLine();
     ann.set_lineColor("#C3ECFF");
 
